@@ -117,6 +117,24 @@ static const PROV_CIPHER_HW rv64i_ctr = {
 
 const PROV_CIPHER_HW *ossl_prov_cipher_hw_rv64i(enum aes_modes mode)
 {
+#ifdef OSSL_AES_KLE
+    /*
+     * Keys go into Zkl lockers for the modes built on the ECB Machine.
+     * kl.exec works on vector registers, so V must be usable too.
+     */
+    if (RISCV_HAS_ZKL() && RISCV_HAS_V()) {
+        switch (mode) {
+        case AES_MODE_ECB:
+            return ossl_prov_cipher_hw_aes_kle(EVP_CIPH_ECB_MODE);
+        case AES_MODE_CBC:
+            return ossl_prov_cipher_hw_aes_kle(EVP_CIPH_CBC_MODE);
+        case AES_MODE_CTR:
+            return ossl_prov_cipher_hw_aes_kle(EVP_CIPH_CTR_MODE);
+        default:
+            break;
+        }
+    }
+#endif
     if ((RISCV_HAS_ZVKNED() && riscv_vlen() >= 128)
         || RISCV_HAS_ZKND_AND_ZKNE()) {
         switch (mode) {
@@ -223,6 +241,11 @@ static const PROV_GCM_HW rv64i_zvkb_zvkg_zvkned_gcm = {
 
 const PROV_GCM_HW *ossl_prov_aes_hw_gcm_rv64i(void)
 {
+#ifdef OSSL_AES_GCM_KLE
+    /* AES on Zkl lockers, as for ECB, CBC and CTR; GHASH in software. */
+    if (RISCV_HAS_ZKL() && RISCV_HAS_V())
+        return ossl_prov_aes_hw_gcm_kle();
+#endif
     if (RISCV_HAS_ZVKNED() && riscv_vlen() >= 128) {
         if (RISCV_HAS_ZVKB() && RISCV_HAS_ZVKG())
             return &rv64i_zvkb_zvkg_zvkned_gcm;

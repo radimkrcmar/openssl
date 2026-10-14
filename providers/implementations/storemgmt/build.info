@@ -7,3 +7,6 @@ SOURCE[$STORE_GOAL]=file_store.c file_store_any2obj.c
 IF[{- !$disabled{winstore} -}]
     SOURCE[$STORE_GOAL]=winstore_store.c
 ENDIF
+IF[{- !$disabled{kle} && !$disabled{module} -}]
+  SOURCE[../../libkle.a]=kle_store.c
+ENDIF

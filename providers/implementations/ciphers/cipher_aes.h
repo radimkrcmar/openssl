@@ -101,3 +101,14 @@ const PROV_CIPHER_HW *ossl_prov_cipher_hw_t4(enum aes_modes mode);
 #endif
 
 #endif /* !defined(OSSL_PROVIDERS_IMPLEMENTATIONS_CIPHERS_CIPHER_AES_H) */
+
+#include "crypto/riscv_kle.h"
+#if defined(OSSL_RISCV_KLE) && !defined(FIPS_MODULE)
+/* RISC-V Zkl lockers (cipher_aes_hw_kle.c): ECB, CBC and CTR only. */
+#define OSSL_AES_KLE 1
+const PROV_CIPHER_HW *ossl_prov_cipher_hw_aes_kle(int mode);
+int ossl_cipher_hw_aes_is_kle(const PROV_CIPHER_HW *hw);
+int ossl_cipher_aes_kle_set_scc(PROV_CIPHER_CTX *dat,
+                                 const unsigned char *scc, size_t len);
+void ossl_cipher_aes_kle_release(PROV_CIPHER_CTX *dat);
+#endif

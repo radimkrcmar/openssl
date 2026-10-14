@@ -50,6 +50,8 @@ RISCV_DEFINE_CAP(ZVKNHA, 0, 20, 4, (1 << 22))
 RISCV_DEFINE_CAP(ZVKNHB, 0, 21, 4, (1 << 23))
 RISCV_DEFINE_CAP(ZVKSED, 0, 22, 4, (1 << 24))
 RISCV_DEFINE_CAP(ZVKSH, 0, 23, 4, (1 << 25))
+/* Zkl (KLE lockers), prototype: hwprobe IMA_EXT_1 bit 6 (provisional) */
+RISCV_DEFINE_CAP(ZKL, 0, 24, 16, (1 << 6))
 
 /*
  * In the future ...

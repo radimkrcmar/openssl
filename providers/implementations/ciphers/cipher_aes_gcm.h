@@ -75,4 +75,13 @@ const PROV_GCM_HW *ossl_prov_aes_hw_gcm_s390x(size_t keybits);
 const PROV_GCM_HW *ossl_prov_aes_hw_gcm_t4(void);
 #endif
 
+#include "crypto/riscv_kle.h"
+#if defined(OSSL_RISCV_KLE) && !defined(FIPS_MODULE)
+/* AES on RISC-V Zkl lockers, GHASH in software (cipher_aes_hw_kle.c). */
+#define OSSL_AES_GCM_KLE 1
+const PROV_GCM_HW *ossl_prov_aes_hw_gcm_kle(void);
+void ossl_aes_gcm_kle_dup(PROV_GCM_CTX *dst, const PROV_GCM_CTX *src);
+void ossl_aes_gcm_kle_release(PROV_GCM_CTX *ctx);
+#endif
+
 #endif /* !defined(OSSL_PROVIDERS_IMPLEMENTATIONS_CIPHERS_CIPHER_AES_GCM_H) */

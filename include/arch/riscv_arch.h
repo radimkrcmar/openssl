@@ -102,9 +102,10 @@ static const size_t kRISCVNumCaps =
  * hwprobe_key is copied from asm/hwprobe.h.
  * It should be updated along with riscv_arch.def.
  */
-#define OSSL_RISCV_HWPROBE_PAIR_COUNT 1
+#define OSSL_RISCV_HWPROBE_PAIR_COUNT 2
 #define OSSL_RISCV_HWPROBE_PAIR_CONTENT \
-    { 4, 0 },
+    { 4, 0 },                           \
+    { 16, 0 },
 #endif
 
 /* Extension combination tests. */

@@ -549,6 +549,7 @@ my @disablables_features = (
     "fuzz-libfuzzer",
     "integrity-only-ciphers",
     "jitter",
+    "kle",
     "legacy",
     "makedepend",
     "module",
@@ -645,6 +646,7 @@ our %disabled = ( # "what"         => "comment"
                   "fuzz-libfuzzer"      => "default",
                   "pie"                 => "default",
                   "jitter"              => "default",
+                  "kle"                 => "default",
                   "ktls"                => "default",
                   "lms"                 => "default",
                   "md2"                 => "default",
@@ -2047,6 +2049,13 @@ unless ($disabled{ktls}) {
 unless ($disabled{winstore}) {
     unless ($target =~ /^(?:Cygwin|mingw|VC-|BC-)/) {
         disable('not-windows', 'winstore');
+    }
+}
+
+# The Zkl (KLE) lockers prototype is implemented for riscv64 Linux only.
+unless ($disabled{kle}) {
+    unless ($target =~ /^linux64-riscv64/) {
+        disable('not-riscv64-linux', 'kle');
     }
 }
 

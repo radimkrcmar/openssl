@@ -46,6 +46,10 @@ static void *aes_gcm_dupctx(void *provctx)
     dctx = OPENSSL_memdup(ctx, sizeof(*ctx));
     if (dctx != NULL && dctx->base.gcm.key != NULL)
         dctx->base.gcm.key = &dctx->ks.ks;
+#ifdef OSSL_AES_GCM_KLE
+    if (dctx != NULL)
+        ossl_aes_gcm_kle_dup(&dctx->base, &ctx->base);
+#endif
 
     return dctx;
 }
@@ -55,6 +59,10 @@ static void aes_gcm_freectx(void *vctx)
 {
     PROV_AES_GCM_CTX *ctx = (PROV_AES_GCM_CTX *)vctx;
 
+#ifdef OSSL_AES_GCM_KLE
+    if (ctx != NULL)
+        ossl_aes_gcm_kle_release(&ctx->base);
+#endif
     OPENSSL_clear_free(ctx, sizeof(*ctx));
 }
 

@@ -174,6 +174,27 @@ IF[{- !$disabled{legacy} -}]
 ENDIF
 
 #
+# KLE provider: AES in RISC-V Zkl cryptographic lockers (prototype).
+# Only built as a module, with enable-kle.
+#
+IF[{- !$disabled{kle} && !$disabled{module} -}]
+  $LIBKLE=libkle.a
+  LIBS{noinst}=$LIBKLE
+  INCLUDE[$LIBKLE]=.. $COMMON_INCLUDES implementations/ciphers
+  DEFINE[$LIBKLE]=KLE_PROVIDER
+  DEPEND[$LIBKLE]=$LIBCOMMON
+  SOURCE[$LIBKLE]=prov_running.c
+  MODULES=kle
+  DEPEND[kle]=$LIBKLE ../libcrypto
+  IF[{- defined $target{shared_defflag} -}]
+    SOURCE[kle]=kle.ld
+    GENERATE[kle.ld]=../util/providers.num
+  ENDIF
+  SOURCE[kle]=kleprov.c
+  INCLUDE[kle]=../include implementations/include common/include
+ENDIF
+
+#
 # Null provider stuff
 #
 # Because the null provider is built in, it means that libcrypto must

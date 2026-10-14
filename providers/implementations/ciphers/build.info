@@ -98,6 +98,14 @@ SOURCE[$COMMON_GOAL]=\
 
 # These sources contain parameter decoders conditioned on FIPS_MODULE.
 SOURCE[$CIPHER_COMMON_GOAL]=ciphercommon.c
+
+# RISC-V Zkl (KLE) lockers: used by the default provider for raw keys and
+# by the kle provider.
+SOURCE[../../libdefault.a]=cipher_aes_hw_kle.c
+IF[{- !$disabled{kle} && !$disabled{module} -}]
+  SOURCE[../../libkle.a]=ciphercommon.c ciphercommon_gcm.c \
+        cipher_aes_hw_kle.c cipher_aes_kle.c cipher_aes_gcm_kle.c
+ENDIF
 SOURCE[$AEAD_COMMON_GOAL]=ciphercommon_gcm.c ciphercommon_ccm.c
 
 INCLUDE[cipher_aes_cbc_hmac_sha.o cipher_aes_cbc_hmac_sha_etm.o \

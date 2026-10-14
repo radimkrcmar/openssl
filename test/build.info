@@ -1394,6 +1394,13 @@ IF[{- !$disabled{tests} -}]
   INCLUDE[evp_skey_test]=../include ../apps/include
   DEPEND[evp_skey_test]=../libcrypto libtestutil.a
 
+  IF[{- !$disabled{kle} -}]
+    PROGRAMS{noinst}=kle_test
+    SOURCE[kle_test]=kle_test.c
+    INCLUDE[kle_test]=../include ../apps/include
+    DEPEND[kle_test]=../libcrypto libtestutil.a
+  ENDIF
+
   PROGRAMS{noinst}=provider_default_search_path_test
   SOURCE[provider_default_search_path_test]=provider_default_search_path_test.c
   INCLUDE[provider_default_search_path_test]=../include ../apps/include

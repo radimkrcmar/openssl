@@ -30,6 +30,10 @@ static void aes_freectx(void *vctx)
 {
     PROV_AES_CTX *ctx = (PROV_AES_CTX *)vctx;
 
+#ifdef OSSL_AES_KLE
+    if (ossl_cipher_hw_aes_is_kle(ctx->base.hw))
+        ossl_cipher_aes_kle_release(&ctx->base);
+#endif
     ossl_cipher_generic_reset_ctx((PROV_CIPHER_CTX *)vctx);
     OPENSSL_clear_free(ctx, sizeof(*ctx));
 }

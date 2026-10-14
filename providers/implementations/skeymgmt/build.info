@@ -10,3 +10,6 @@ ENDIF
 
 SOURCE[$AES_GOAL]=aes_skmgmt.c
 SOURCE[$GENERIC_GOAL]=generic.c
+IF[{- !$disabled{kle} && !$disabled{module} -}]
+  SOURCE[../../libkle.a]=kle_skmgmt.c
+ENDIF
